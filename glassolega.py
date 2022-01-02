@@ -12,12 +12,13 @@ async def start(message: types.Message):
 
 @dp.message_handler()
 async def echo(message: types.Message):
-    db_list = read_file()
+    with open('usernames.txt','a') as file:
+        file.write(message.from_user.username + "\n")
     answers = find_element(message.text, db_list)
-
     if answers:
+        print(message.from_user.username + " " + message.text + ":")
         for index, answer in enumerate(answers):
-            print(message.text + " : " + answer)
+            print("→→→ " + answer)
             await message.answer('Совместимые между собой модели:\n\n' + answer)
             if index == 2:
                 break
@@ -37,6 +38,8 @@ def find_element(message, db_list):
     return list(elems)
 
 def main():
+    global db_list
+    db_list = read_file()
     executor.start_polling(dp, skip_updates=True)
 
 if __name__ == "__main__":
