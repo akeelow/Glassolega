@@ -12,8 +12,7 @@ async def start(message: types.Message):
 
 @dp.message_handler()
 async def echo(message: types.Message):
-    with open('usernames.txt','a') as file:
-        file.write(message.from_user.username + "\n")
+    add_username_to_file(message.from_user.username)
     answers = find_element(message.text, db_list)
     if answers:
         print(message.from_user.username + " " + message.text + ":")
@@ -24,7 +23,11 @@ async def echo(message: types.Message):
                 break
     else:
         await message.answer('Нет совместимых')
-    #answer = answers[0] if answers else "Нет совместимых"
+
+def add_username_to_file(username):
+    with open('usernames.txt','a') as file:
+        file.write(username + "\n")
+
 
 def read_file():
     with open('glassolega.txt', 'r') as fp:
