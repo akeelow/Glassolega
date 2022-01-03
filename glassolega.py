@@ -7,12 +7,15 @@ dp = Dispatcher(bot)
 
 @dp.message_handler(commands="start")
 async def start(message: types.Message):
-    await message.answer("Привет! Введи модель телефона, чтобы найти совместимое защитное стекло.")
+    await message.answer("Привет! Введите модель телефона, чтобы найти совместимое защитное стекло.")
 
 @dp.message_handler()
 async def echo(message: types.Message):
     add_username_to_file(message.from_user.username)
-    answers = find_element(message.text, db_list)
+    answers = find_element(message.text)
+    print('*************')
+    print(search_for_full_match(message.text))
+    print('*************')
     if answers:
         print(message.from_user.username + " " + message.text + ":")
         await message.answer('📲 Поиск по *«' + message.text + '»*:')
@@ -34,14 +37,23 @@ def read_file():
         data = fp.read()
     return data.splitlines()
 
-def find_element(message, db_list):
+def find_element(message):
     is_elem = lambda x: x.lower().find(message.lower()) != -1
-    elems = filter(is_elem, db_list)
+    elems = filter(is_elem, list_of_glasses)
     return list(elems)
 
+def search_for_full_match(message_from_user):
+    results = []
+    for line in list_of_glasses:
+        compatible_phones = line.split('/')
+        for compatible_phone in compatible_phones:
+            if compatible_phone.lower() == message_from_user.lower():
+                results.append(compatible_phones)
+    return results
+
 def main():
-    global db_list
-    db_list = read_file()
+    global list_of_glasses
+    list_of_glasses = read_file()
     executor.start_polling(dp, skip_updates=True)
 
 if __name__ == "__main__":
