@@ -1,4 +1,3 @@
-from os import sep
 from auth import token
 from aiogram import Bot, Dispatcher, executor, types
 
@@ -33,11 +32,10 @@ def add_username_to_file(username):
 def read_file():
     with open('glassolega.txt', 'r') as fp:
         data = fp.read()
-
     return data.splitlines()
 
 def find_element(message, db_list):
-    is_elem = lambda x: x.lower().find(message.lower()) > 0
+    is_elem = lambda x: x.lower().find(message.lower()) != -1
     elems = filter(is_elem, db_list)
     return list(elems)
 
