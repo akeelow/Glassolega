@@ -16,6 +16,7 @@ async def echo(message: types.Message):
     answers = find_element(message.text, db_list)
     if answers:
         print(message.from_user.username + " " + message.text + ":")
+        await message.answer('📲 Поиск по *«' + message.text + '»*:')
         for index, answer in enumerate(answers):
             print("→→→ " + answer)
             await message.answer('Совместимые между собой модели:\n\n' + answer)
