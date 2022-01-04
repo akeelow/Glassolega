@@ -1,4 +1,5 @@
 from auth import token
+import time
 from aiogram import Bot, Dispatcher, executor, types
 
 
@@ -12,20 +13,24 @@ async def start(message: types.Message):
 @dp.message_handler()
 async def echo(message: types.Message):
     add_username_to_file(message.from_user.username)
+    full_match = search_for_full_match(message.text)
     answers = find_element(message.text)
-    print('*************')
-    print(search_for_full_match(message.text))
-    print('*************')
-    if answers:
-        print(message.from_user.username + " " + message.text + ":")
-        await message.answer('📲 Поиск по *«' + message.text + '»*:')
+
+    if full_match:
+        print(full_match)
+        await message.answer('😃Отлично! *«' + message.text + '»* - есть в базе!\n\n👇Подойдут стёкла от следующих моделей телефонов:')
+        await message.answer('📲 ' + '\n📲 '.join(full_match))
+
+    elif answers:
+        await message.answer('😔Модели *«' + message.text + '»* - нет в базе!\n\n👇Ищем похожие модели телефонов:')
         for index, answer in enumerate(answers):
-            print("→→→ " + answer)
-            await message.answer('Совместимые между собой модели:\n\n' + answer)
-            if index == 2:
+            await message.answer('📲' + answer.replace('/', '📲'))
+            time.sleep(1)
+            if index == 9:
                 break
+
     else:
-        await message.answer('Нет совместимых')
+        await message.answer('Для *«' + message.text + '»* нет совместимых стёкол.')
 
 def add_username_to_file(username):
     with open('usernames.txt','a') as file:
@@ -43,13 +48,13 @@ def find_element(message):
     return list(elems)
 
 def search_for_full_match(message_from_user):
-    results = []
+    results =[]
     for line in list_of_glasses:
         compatible_phones = line.split('/')
         for compatible_phone in compatible_phones:
             if compatible_phone.lower() == message_from_user.lower():
-                results.append(compatible_phones)
-    return results
+                results = compatible_phones
+    return results 
 
 def main():
     global list_of_glasses
