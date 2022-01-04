@@ -129,6 +129,5 @@ dmypy.json
 .pyre/
 
 .venv
-glassolega.txt
 auth.py
 usernames.txt
