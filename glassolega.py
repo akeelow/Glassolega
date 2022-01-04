@@ -17,11 +17,11 @@ async def echo(message: types.Message):
     answers = find_element(message.text)
 
     if full_match:
-        await message.answer('😃Отлично! *«' + message.text + '»* - есть в базе!\n\n👇Подойдут стёкла от следующих моделей телефонов:')
+        await message.answer('😃Отлично! *«' + message.text + '»* - есть в базе!\n\n👇Подойдут стёкла от👇')
         await message.answer('📲 ' + '\n📲 '.join(full_match))
 
     elif answers:
-        await message.answer('🤔Модели *«' + message.text + '»* - нет в базе!\n\n👇Ищем похожие модели телефонов:')
+        await message.answer('🤔Модели *«' + message.text + '»* - нет в базе!\n\n👇Ищем похожие модели телефонов👇')
         for index, answer in enumerate(answers):
             await message.answer('📲' + answer.replace('/', '📲'))
             time.sleep(1)
