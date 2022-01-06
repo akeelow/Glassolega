@@ -46,14 +46,9 @@ def find_element(message):
     elems = filter(is_elem, list_of_glasses)
     return list(elems)
 
-def search_for_full_match(message_from_user):
-    results =[]
-    for line in list_of_glasses:
-        compatible_phones = line.split('/')
-        for compatible_phone in compatible_phones:
-            if compatible_phone.lower() == message_from_user.lower():
-                results = compatible_phones
-    return results 
+def search_for_full_match3(message_from_user):
+    is_match = lambda x: message_from_user.lower() in x.lower().split('/')
+    return list(filter(is_match, list_of_glasses))
 
 def main():
     global list_of_glasses
