@@ -46,7 +46,7 @@ def find_element(message):
     elems = filter(is_elem, list_of_glasses)
     return list(elems)
 
-def search_for_full_match3(message_from_user):
+def search_for_full_match(message_from_user):
     is_match = lambda x: message_from_user.lower() in x.lower().split('/')
     return list(filter(is_match, list_of_glasses))
 
