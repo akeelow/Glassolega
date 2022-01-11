@@ -24,7 +24,10 @@ async def start(message: types.Message):
 @dp.message_handler()
 async def echo(message: types.Message):
     if message.text != "📊Статистика":
-        add_username_to_file(message.from_user.username)
+        if message.from_user.username:
+            add_username_to_file(message.from_user.username)
+        else:
+            add_username_to_file(str(message.from_user.id))
         full_match = search_for_full_match(message.text)
         answers = find_element(message.text)
 
