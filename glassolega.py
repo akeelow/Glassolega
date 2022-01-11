@@ -8,7 +8,9 @@ dp = Dispatcher(bot)
 
 @dp.message_handler(commands="start")
 async def start(message: types.Message):
-    await message.answer("Привет! Введите модель телефона, чтобы найти совместимое защитное стекло.")
+    await message.answer("Введите модель телефона.\n",
+                         "Пример: Samsung Galaxy A52\n",
+                         "Если ввести не полное название модели телефона, тогда бот найдет больше результатов. Каждый результат это совместимые только между собой модели.")
 
 @dp.message_handler()
 async def echo(message: types.Message):
