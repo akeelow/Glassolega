@@ -3,7 +3,7 @@ import time
 from aiogram import Bot, Dispatcher, executor, types
 
 
-bot = Bot(token=token, parse_mode="Markdown")
+bot = Bot(token=token, parse_mode="MarkdownV2")
 dp = Dispatcher(bot)
 
 @dp.message_handler(commands="start")
