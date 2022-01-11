@@ -3,13 +3,13 @@ import time
 from aiogram import Bot, Dispatcher, executor, types
 
 
-bot = Bot(token=token, parse_mode="MarkdownV2")
+bot = Bot(token=token)
 dp = Dispatcher(bot)
 
 @dp.message_handler(commands="start")
 async def start(message: types.Message):
-    await message.answer("Введите модель телефона.\n",
-                         "Пример: Samsung Galaxy A52\n",
+    await message.answer("Введите модель телефона.\n" + 
+                         "Пример: Samsung Galaxy A52\n" + 
                          "Если ввести не полное название модели телефона, тогда бот найдет больше результатов. Каждый результат это совместимые только между собой модели.")
 
 @dp.message_handler()
@@ -19,15 +19,16 @@ async def echo(message: types.Message):
     answers = find_element(message.text)
 
     if full_match:
-        await message.answer('😃Отлично! *«' + message.text + '»* - есть в базе!\n\n👇Подойдут стёкла от👇')
-        await message.answer('📲 ' + '\n📲 '.join(full_match))
+        await message.answer("📲Совместимые стёкла для «" + message.text + "»:" +
+                             "\n " + "".join(full_match))
+        #await message.answer('📲 ' + '\n📲 '.join(full_match))
 
     elif answers:
-        await message.answer('🤔Модели *«' + message.text + '»* - нет в базе!\n\n👇Ищем похожие модели телефонов👇')
+        await message.answer('Идет поиск «' + message.text + '»...')
         for index, answer in enumerate(answers):
-            await message.answer('📲' + answer.replace('/', '📲'))
             time.sleep(1)
-            if index == 9:
+            await message.answer('📲' + answer.replace('/', '📲'))
+            if index == 5:
                 break
 
     else:
