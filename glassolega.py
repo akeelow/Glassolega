@@ -26,8 +26,8 @@ async def start(message: types.Message):
 
 @dp.message_handler()
 async def echo(message: types.Message):
-    if reg.sub('', message.text):
-        if message.text != "📊Статистика":
+    if message.text != "📊Статистика":
+        if reg.sub('', message.text):
             if message.from_user.username:
                 add_username_to_file(message.from_user.username)
             else:
@@ -50,9 +50,9 @@ async def echo(message: types.Message):
             else:
                 await message.answer('😔Для *«' + message.text + '»* нет совместимых стёкол.')
         else:
-            await message.answer(get_stat())
+            await message.answer('📵 Не похоже на модель телефона')
     else:
-        await message.answer('📵 Не похоже на модель телефона')
+        await message.answer(get_stat())
 
 def get_stat():
     users = set(read_file("usernames.txt"))
