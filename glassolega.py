@@ -50,7 +50,7 @@ async def echo(message: types.Message):
 
 def get_stat():
     users = set(read_file("usernames.txt"))
-    return "Users: {0}".format(len(users))
+    return "Users: {0}".format(str(users))
 
 def add_username_to_file(username):
     with open('usernames.txt','a') as file:
