@@ -3,6 +3,9 @@ import time
 from aiogram import Bot, Dispatcher, executor, types
 from aiogram.types import ReplyKeyboardRemove, \
     ReplyKeyboardMarkup, KeyboardButton
+import re
+
+reg = re.compile('[^a-zA-Z ]')
 
 button_stat = KeyboardButton('📊Статистика')
 admin_kb = ReplyKeyboardMarkup(resize_keyboard=True).add(button_stat)
@@ -23,30 +26,33 @@ async def start(message: types.Message):
 
 @dp.message_handler()
 async def echo(message: types.Message):
-    if message.text != "📊Статистика":
-        if message.from_user.username:
-            add_username_to_file(message.from_user.username)
+    if reg.sub('', message.text):
+        if message.text != "📊Статистика":
+            if message.from_user.username:
+                add_username_to_file(message.from_user.username)
+            else:
+                add_username_to_file(str(message.from_user.id))
+            full_match = search_for_full_match(message.text)
+            answers = find_element(message.text)
+
+            if full_match:
+                await message.answer("📲Совместимые стёкла для «" + message.text + "»:" +
+                                    "\n " + "".join(full_match))
+
+            elif answers:
+                await message.answer('Идет поиск «' + message.text + '»...')
+                for index, answer in enumerate(answers):
+                    time.sleep(1)
+                    await message.answer('📲' + answer.replace('/', '📲'))
+                    if index == 5:
+                        break
+
+            else:
+                await message.answer('😔Для *«' + message.text + '»* нет совместимых стёкол.')
         else:
-            add_username_to_file(str(message.from_user.id))
-        full_match = search_for_full_match(message.text)
-        answers = find_element(message.text)
-
-        if full_match:
-            await message.answer("📲Совместимые стёкла для «" + message.text + "»:" +
-                                "\n " + "".join(full_match))
-
-        elif answers:
-            await message.answer('Идет поиск «' + message.text + '»...')
-            for index, answer in enumerate(answers):
-                time.sleep(1)
-                await message.answer('📲' + answer.replace('/', '📲'))
-                if index == 5:
-                    break
-
-        else:
-            await message.answer('😔Для *«' + message.text + '»* нет совместимых стёкол.')
+            await message.answer(get_stat())
     else:
-        await message.answer(get_stat())
+        await message.answer('📵 Не похоже на модель телефона')
 
 def get_stat():
     users = set(read_file("usernames.txt"))
