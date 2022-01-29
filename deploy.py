@@ -15,14 +15,22 @@ session.connect(
 	username = user,
 	pkey=key_file
 	)
+stdin, stdout, stderr = session.exec_command('sudo systemctl stop glassolega.service')
+time.sleep(1)
+print(stdout.read().decode())
 
 stdin, stdout, stderr = session.exec_command('cd /home/ubuntu/glassolega_bot/Glassolega;\
-                                              sudo systemctl stop glassolega.service;\
                                               git pull https://github.com/akeelow/Glassolega.git;\
-                                              sudo systemctl start glassolega.service;\
-                                              sudo systemctl status glassolega.service\
                                               ')
-time.sleep(.5)
-
+time.sleep(1)
 print(stdout.read().decode())
+
+stdin, stdout, stderr = session.exec_command('sudo systemctl start glassolega.service')
+time.sleep(1)
+print(stdout.read().decode())
+
+stdin, stdout, stderr = session.exec_command('sudo systemctl status glassolega.service')
+time.sleep(1)
+print(stdout.read().decode())
+
 session.close()
