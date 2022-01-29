@@ -50,7 +50,7 @@ async def echo(message: types.Message):
             else:
                 await message.answer('😔Для *«' + message.text + '»* нет совместимых стёкол.')
         else:
-            await message.answer('📵 Не похоже на модель телефона')
+            await message.answer('📵 Не похоже на модель телефона 📵')
     else:
         await message.answer(get_stat())
 
